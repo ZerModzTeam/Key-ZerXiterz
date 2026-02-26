@@ -12,10 +12,7 @@ let countdownInterval;
 
 window.onload = () => {
     const saved = localStorage.getItem('zerx_session');
-    if(saved) {
-        session = JSON.parse(saved);
-        monitorAccount();
-    }
+    if(saved) { session = JSON.parse(saved); monitorAccount(); }
     drawStars();
 };
 
@@ -56,15 +53,11 @@ function startPanel() {
 }
 
 function show(id) {
-    document.querySelectorAll('.box').forEach(b => {
-        b.classList.add('hidden');
-        b.classList.remove('animate-in');
-    });
+    document.querySelectorAll('.box').forEach(b => { b.classList.add('hidden'); b.classList.remove('animate-in'); });
     const target = document.getElementById(id);
     if(target) {
         target.classList.remove('hidden');
-        void target.offsetWidth; // Trigger restart animasi
-        target.classList.add('animate-in');
+        void target.offsetWidth; target.classList.add('animate-in');
         if(id === 'list-scr') loadKeys();
         if(id === 'manage-user-scr') loadUsers();
     }
@@ -75,7 +68,7 @@ async function authLogin() {
     if(u === "acumalaka" && p === "gblk8989") { session = {user:u, role:"OWNER"}; loginOk(); return; }
     db.ref('users/'+u).once('value', s => {
         if(s.exists() && s.val().pass === p) { session = s.val(); loginOk(); }
-        else alert("USERNAME/PASS SALAH!");
+        else alert("LOGIN GAGAL!");
     });
 }
 
@@ -96,9 +89,10 @@ function loadKeys() {
         s.forEach(k => {
             const v = k.val();
             if(session.role === "OWNER" || session.role === "ADMIN" || v.owner === session.user) {
-                h += `<div class="item-card"><b>${k.key}</b><div style="margin-top:5px; display:flex; gap:5px;">
-                <button onclick="alert('Used: ${v.used}/${v.max_device}')" style="background:blue; font-size:9px; padding:5px;">INFO</button>
-                <button onclick="db.ref('license/${k.key}').remove()" style="background:red; font-size:9px; padding:5px;">DEL</button>
+                const info = `NAMA GAME : ${v.game}\\nDAY : ${v.day}\\nTERPAKAI : ${v.used}/${v.max_device}`;
+                h += `<div class="item-card"><b style="color:var(--cyan)">${k.key}</b><div style="margin-top:8px; display:flex; gap:8px;">
+                <button onclick="alert('${info}')" style="background:#0055ff; font-size:9px; height:30px;">DETAIL</button>
+                <button onclick="confirm('Hapus?') ? db.ref('license/${k.key}').remove() : null" style="background:red; font-size:9px; height:30px;">DELETE</button>
                 </div></div>`;
             }
         });
@@ -109,7 +103,7 @@ function loadKeys() {
 function saveNewUser() {
     const u = document.getElementById('new_u').value, p = document.getElementById('new_p').value, r = document.getElementById('new_r').value, e = document.getElementById('new_e_date').value;
     if(!u || !p || !e) return alert("LENGKAPI DATA!");
-    db.ref('users/'+u).set({user:u, pass:p, role:r, expiry:e}).then(() => { alert("AKUN DIBUAT!"); show('home-screen'); });
+    db.ref('users/'+u).set({user:u, pass:p, role:r, expiry:e}).then(() => { alert("USER CREATED!"); show('home-screen'); });
 }
 
 function loadUsers() {
@@ -118,7 +112,7 @@ function loadUsers() {
         s.forEach(u => {
             const v = u.val();
             h += `<div class="item-card"><b>${v.user}</b> <small>(${v.role})</small>
-            <button onclick="db.ref('users/${v.user}').remove()" style="float:right; background:red; font-size:9px; width:50px; padding:4px;">DEL</button><div style="clear:both"></div></div>`;
+            <button onclick="db.ref('users/${v.user}').remove()" style="float:right; background:red; font-size:9px; width:65px; padding:5px;">DELETE</button><div style="clear:both"></div></div>`;
         });
         document.getElementById('user-list-area').innerHTML = h || "KOSONG";
     });
@@ -126,7 +120,7 @@ function loadUsers() {
 
 function toggleKeyInput() { document.getElementById('custom_key_input').classList.toggle('hidden', document.getElementById('key_type').value === 'random'); }
 
-// Stars
+// Background
 const cvs = document.getElementById('starCanvas'); const ctx = cvs.getContext('2d');
 cvs.width = window.innerWidth; cvs.height = window.innerHeight;
 let stars = []; for(let i=0; i<100; i++) stars.push({x:Math.random()*cvs.width, y:Math.random()*cvs.height, s:Math.random()*1.5});
@@ -134,4 +128,4 @@ function drawStars() {
     ctx.clearRect(0,0,cvs.width,cvs.height); ctx.fillStyle="#fff";
     stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, 7); ctx.fill(); s.y+=0.5; if(s.y>cvs.height) s.y=0; });
     requestAnimationFrame(drawStars);
-                                                                                                                                                                }
+}
