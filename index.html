@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZERXITERZ PANEL</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <canvas id="starCanvas"></canvas>
+
+    <div id="login-screen" class="box">
+        <div class="logo-container">
+            <i class="fas fa-shield-alt" style="font-size: 50px; color: cyan; text-shadow: 0 0 15px cyan;"></i>
+        </div>
+        <h2 style="color: cyan; text-shadow: 0 0 15px cyan;">ZERX LOGIN</h2>
+        <input type="text" id="u_log" placeholder="USERNAME">
+        <input type="password" id="p_log" placeholder="PASSWORD">
+        <button onclick="authLogin()">LOGIN PANEL</button>
+        <p style="font-size: 11px; color: #fff; margin-top: 15px;">
+            Belum punya akun? <a href="https://t.me/ZERXITERZ" style="color: cyan; text-decoration: none; font-weight: bold;">Beli ke Telegram</a>
+        </p>
+        <p style="font-size: 9px; color: #555; margin-top: 10px;">DEVELOPER BY ZERXITERZ</p>
+    </div>
+
+    <div id="home-screen" class="box hidden">
+        <h2 style="color: cyan">MAIN MENU</h2>
+        <p id="welcome-msg" style="font-size: 11px; color: lime; margin-bottom: 15px;"></p>
+        <button onclick="show('gen-scr')"><i class="fas fa-plus-circle"></i> BUAT KUNCI</button>
+        <button onclick="show('list-scr')"><i class="fas fa-list"></i> KELOLA KUNCI</button>
+        <div id="admin-tools" class="hidden">
+            <hr style="border: 0.5px solid #333; margin: 15px 0;">
+            <button onclick="show('user-scr')"><i class="fas fa-user-plus"></i> ADD RESELLER</button>
+        </div>
+        <button onclick="location.reload()" style="background:red; margin-top: 20px;">LOGOUT</button>
+        <p style="font-size: 9px; color: #555; margin-top: 10px;">V.1.0 FINAL SYSTEM</p>
+    </div>
+
+    <div id="gen-scr" class="box hidden">
+        <h3>CREATE KEY</h3>
+        <select id="g_sel">
+            <option>FAKE LAG X ZERXITERZ</option>
+            <option>FF MAX X ZERXITERZ</option>
+            <option>BLOODSTRIKE X ZERXITERZ</option>
+        </select>
+        <select id="d_sel">
+            <option value="1">1 DAY</option>
+            <option value="7">7 DAYS</option>
+            <option value="30">30 DAYS</option>
+        </select>
+        <button onclick="doGenerate()">GENERATE</button>
+        <button onclick="show('home-screen')" style="background:grey">BACK</button>
+    </div>
+
+    <div id="list-scr" class="box hidden">
+        <h3>LICENSE LIST</h3>
+        <div id="key-list" class="scroll-area" style="max-height: 200px; overflow-y: auto;"></div>
+        <button onclick="show('home-screen')" style="margin-top:10px">BACK</button>
+    </div>
+
+    <div id="user-scr" class="box hidden">
+        <h3>ADD RESELLER</h3>
+        <input type="text" id="new_u" placeholder="USERNAME">
+        <input type="text" id="new_p" placeholder="PASSWORD">
+        <select id="new_r">
+            <option value="RESELLER">RESELLER</option>
+            <option value="ADMIN">ADMIN</option>
+        </select>
+        <input type="text" id="new_e" placeholder="EXP: 2027-09-25">
+        <button onclick="addUser()">SAVE USER</button>
+        <button onclick="show('home-screen')" style="background:grey">BACK</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

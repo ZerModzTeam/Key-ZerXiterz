@@ -1,0 +1,7 @@
+body { background: #050a14; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+.box { background: rgba(10, 19, 36, 0.95); border: 3px solid #00ffff; padding: 30px; border-radius: 20px; width: 320px; text-align: center; z-index: 10; animation: rgb 3s infinite linear; }
+@keyframes rgb { 0% { border-color: red; } 33% { border-color: lime; } 66% { border-color: blue; } 100% { border-color: red; } }
+.hidden { display: none !important; }
+input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; background: #000; color: white; border: 1px solid #333; }
+button { background: #00ffff; color: #000; font-weight: bold; border: none; cursor: pointer; }
+canvas { position: absolute; top: 0; left: 0; z-index: 1; }
