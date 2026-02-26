@@ -10,7 +10,7 @@
 <body>
     <canvas id="starCanvas"></canvas>
 
-    <div id="login-screen" class="box glow-cyan">
+    <div id="login-screen" class="box glow-cyan animate-in">
         <div class="header-logo">
             <i class="fas fa-user-shield neon-icon"></i>
             <h2>ZERX LOGIN</h2>
@@ -30,14 +30,14 @@
                <a href="https://t.me/ZERXITERZ" class="buy-link">BELI DI SINI!</a>
             </p>
             <div class="social-icons">
-                <a href="#"><i class="fab fa-telegram"></i></a>
-                <a href="#"><i class="fab fa-tiktok"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="https://t.me/ZERXITERZ"><i class="fab fa-telegram"></i></a>
+                <a href="https://tiktok.com/@zerxiterz"><i class="fab fa-tiktok"></i></a>
+                <a href="https://youtube.com/@zerxiterz"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
     </div>
 
-    <div id="home-screen" class="box hidden glow-purple">
+    <div id="home-screen" class="box hidden glow-purple animate-in">
         <div class="header-logo">
             <i class="fas fa-th-large neon-icon-purple"></i>
             <h2>MAIN MENU</h2>
@@ -52,17 +52,14 @@
         
         <div id="admin-tools" class="hidden">
             <div class="separator"><span>ADMIN ONLY</span></div>
-            <button onclick="show('add-user-scr')" class="btn-opt admin-btn"><i class="fas fa-user-plus"></i> ADD RESELLER</button>
+            <button onclick="show('add-user-scr')" class="btn-opt admin-btn"><i class="fas fa-user-plus"></i> BUAT AKUN</button>
             <button onclick="show('manage-user-scr')" class="btn-opt admin-btn"><i class="fas fa-users-cog"></i> KELOLA AKUN</button>
         </div>
         <button onclick="doLogout()" class="btn-logout"><i class="fas fa-power-off"></i> LOGOUT</button>
     </div>
 
-    <div id="gen-scr" class="box hidden glow-blue">
-        <div class="header-logo">
-            <i class="fas fa-plus-circle neon-icon-blue"></i>
-            <h3>BUAT KUNCI</h3>
-        </div>
+    <div id="gen-scr" class="box hidden glow-blue animate-in">
+        <h3><i class="fas fa-plus-circle"></i> BUAT KUNCI</h3>
         <select id="key_type" onchange="toggleKeyInput()">
             <option value="random">RANDOM KEY</option>
             <option value="custom">CUSTOM KEY</option>
@@ -73,16 +70,34 @@
             <option>FF MAX X ZERXITERZ</option>
             <option>BLOODSTRIKE X ZERXITERZ</option>
         </select>
-        <div class="input-group">
-            <i class="fas fa-mobile-alt"></i>
-            <input type="number" id="max_dev_input" placeholder="MAX DEVICE" value="1">
-        </div>
-        <select id="d_sel">
-            <option value="1">1 DAY</option>
-            <option value="7">7 DAYS</option>
-            <option value="30">30 DAYS</option>
+        <input type="number" id="max_dev_input" placeholder="MAX DEVICE" value="1">
+        <select id="d_sel"><option value="1">1 DAY</option><option value="7">7 DAYS</option><option value="30">30 DAYS</option></select>
+        <button onclick="doGenerate()" class="btn-main">GENERATE</button>
+        <button onclick="show('home-screen')" class="btn-back">BACK</button>
+    </div>
+
+    <div id="list-scr" class="box hidden glow-cyan animate-in">
+        <h3><i class="fas fa-list"></i> KELOLA KUNCI</h3>
+        <div id="key-list" class="scroll-area"></div>
+        <button onclick="show('home-screen')" class="btn-back">BACK</button>
+    </div>
+
+    <div id="add-user-scr" class="box hidden glow-purple animate-in">
+        <h3><i class="fas fa-user-plus"></i> BUAT AKUN</h3>
+        <input type="text" id="new_u" placeholder="USERNAME BARU">
+        <input type="text" id="new_p" placeholder="PASSWORD BARU">
+        <select id="new_r">
+            <option value="RESELLER">RESELLER</option>
+            <option value="ADMIN">ADMIN</option>
         </select>
-        <button onclick="doGenerate()" class="btn-main"><i class="fas fa-magic"></i> GENERATE</button>
+        <input type="datetime-local" id="new_e_date">
+        <button onclick="saveNewUser()" class="btn-main">SIMPAN AKUN</button>
+        <button onclick="show('home-screen')" class="btn-back">BACK</button>
+    </div>
+
+    <div id="manage-user-scr" class="box hidden glow-purple animate-in">
+        <h3><i class="fas fa-users-cog"></i> KELOLA AKUN</h3>
+        <div id="user-list-area" class="scroll-area"></div>
         <button onclick="show('home-screen')" class="btn-back">BACK</button>
     </div>
 
