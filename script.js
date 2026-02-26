@@ -43,7 +43,7 @@ function runCountdown(expiry) {
         if(diff <= 0) { doLogout(); }
         else {
             const d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
-            document.getElementById('disp-countdown').innerText = `WAKTU : ${d}d ${h}h ${m}m ${s}s`;
+            document.getElementById('disp-countdown').innerText = `WAKTU : ${d}d ${h}h ${m}s`;
         }
     }, 1000);
 }
@@ -56,15 +56,15 @@ function startPanel() {
 }
 
 function show(id) {
-    // Sembunyikan semua box
-    const boxes = document.querySelectorAll('.box');
-    boxes.forEach(box => box.classList.add('hidden'));
-    
-    // Tampilkan box yang dipilih
+    document.querySelectorAll('.box').forEach(b => {
+        b.classList.add('hidden');
+        b.classList.remove('animate-in');
+    });
     const target = document.getElementById(id);
     if(target) {
         target.classList.remove('hidden');
-        // Load data jika perlu
+        void target.offsetWidth; // Trigger restart animasi
+        target.classList.add('animate-in');
         if(id === 'list-scr') loadKeys();
         if(id === 'manage-user-scr') loadUsers();
     }
@@ -96,9 +96,9 @@ function loadKeys() {
         s.forEach(k => {
             const v = k.val();
             if(session.role === "OWNER" || session.role === "ADMIN" || v.owner === session.user) {
-                h += `<div class="item-card"><b>${k.key}</b><div class="btn-group">
-                <button onclick="alert('DETAIL:\\nUsed: ${v.used}/${v.max_device}\\nGame: ${v.game}')" style="width:70px; font-size:9px; background:blue; color:white;">INFO</button>
-                <button onclick="db.ref('license/${k.key}').remove()" style="width:70px; font-size:9px; background:red; color:white;">DEL</button>
+                h += `<div class="item-card"><b>${k.key}</b><div style="margin-top:5px; display:flex; gap:5px;">
+                <button onclick="alert('Used: ${v.used}/${v.max_device}')" style="background:blue; font-size:9px; padding:5px;">INFO</button>
+                <button onclick="db.ref('license/${k.key}').remove()" style="background:red; font-size:9px; padding:5px;">DEL</button>
                 </div></div>`;
             }
         });
@@ -118,7 +118,7 @@ function loadUsers() {
         s.forEach(u => {
             const v = u.val();
             h += `<div class="item-card"><b>${v.user}</b> <small>(${v.role})</small>
-            <button onclick="db.ref('users/${v.user}').remove()" style="float:right; background:red; color:white; width:60px; font-size:9px;">DEL</button><div style="clear:both"></div></div>`;
+            <button onclick="db.ref('users/${v.user}').remove()" style="float:right; background:red; font-size:9px; width:50px; padding:4px;">DEL</button><div style="clear:both"></div></div>`;
         });
         document.getElementById('user-list-area').innerHTML = h || "KOSONG";
     });
@@ -126,7 +126,7 @@ function loadUsers() {
 
 function toggleKeyInput() { document.getElementById('custom_key_input').classList.toggle('hidden', document.getElementById('key_type').value === 'random'); }
 
-// Background Stars
+// Stars
 const cvs = document.getElementById('starCanvas'); const ctx = cvs.getContext('2d');
 cvs.width = window.innerWidth; cvs.height = window.innerHeight;
 let stars = []; for(let i=0; i<100; i++) stars.push({x:Math.random()*cvs.width, y:Math.random()*cvs.height, s:Math.random()*1.5});
@@ -134,4 +134,4 @@ function drawStars() {
     ctx.clearRect(0,0,cvs.width,cvs.height); ctx.fillStyle="#fff";
     stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, 7); ctx.fill(); s.y+=0.5; if(s.y>cvs.height) s.y=0; });
     requestAnimationFrame(drawStars);
-}
+                                                                                                                                                                }
