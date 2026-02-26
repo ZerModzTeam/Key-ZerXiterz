@@ -39,6 +39,11 @@
 
     <div id="gen-scr" class="box hidden">
         <h3>CREATE KEY</h3>
+        <select id="key_type" onchange="toggleKeyInput()">
+            <option value="random">RANDOM KEY</option>
+            <option value="custom">CUSTOM KEY</option>
+        </select>
+        <input type="text" id="custom_key_input" class="hidden" placeholder="MASUKKAN KEY CUSTOM">
         <select id="g_sel">
             <option>FAKE LAG X ZERXITERZ</option>
             <option>FF MAX X ZERXITERZ</option>
@@ -53,9 +58,9 @@
         <button onclick="show('home-screen')" style="background:grey">BACK</button>
     </div>
 
-    <div id="list-scr" class="box hidden">
+    <div id="list-scr" class="box hidden" style="width: 350px;">
         <h3>LICENSE LIST</h3>
-        <div id="key-list" class="scroll-area" style="max-height: 200px; overflow-y: auto;"></div>
+        <div id="key-list" class="scroll-area" style="max-height: 250px; overflow-y: auto;"></div>
         <button onclick="show('home-screen')" style="margin-top:10px">BACK</button>
     </div>
 
@@ -67,7 +72,7 @@
             <option value="RESELLER">RESELLER</option>
             <option value="ADMIN">ADMIN</option>
         </select>
-        <input type="text" id="new_e" placeholder="EXP: 2027-09-25">
+        <input type="text" id="new_e" placeholder="EXP: 2027-12-30">
         <button onclick="addUser()">SAVE USER</button>
         <button onclick="show('home-screen')" style="background:grey">BACK</button>
     </div>
