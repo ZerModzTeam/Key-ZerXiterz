@@ -1,3 +1,4 @@
+// CONFIGURATION FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyAjDUzQMk7Vs23aXk3swyQaTD1ygx6b0dY",
   databaseURL: "https://zerx-17d95-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -10,76 +11,84 @@ const db = firebase.database();
 let session = null;
 let countdownInterval;
 
+// --- INITIALIZE ---
 window.onload = () => {
     const saved = localStorage.getItem('zerx_session');
     if(saved) {
         session = JSON.parse(saved);
-        monitorAccount(); // Mulai pantau akun biar gak bisa jebol
+        monitorAccount();
     }
     drawStars();
 };
 
-// --- FUNGSI PANTAU AKUN (AUTO KICK & COUNTDOWN) ---
+// --- MONITORING & AUTO-KICK ---
 function monitorAccount() {
     if(session.user === "acumalaka") {
-        startPanel(); 
-        document.getElementById('countdown-timer').innerText = "EXP: PERMANENT (OWNER)";
+        startPanel();
+        document.getElementById('disp-countdown').innerText = "WAKTU : PERMANENT";
+        document.getElementById('disp-statis').innerText = "SAMPAI : UNLIMITED";
         return;
     }
 
-    // Dengerin perubahan data user di Firebase secara realtime
+    // Listener Real-time: Jika akun dihapus di FB, otomatis Logout
     db.ref('users/' + session.user).on('value', s => {
         if(!s.exists()) {
-            alert("AKUN ANDA TELAH DIHAPUS OLEH OWNER!");
+            alert("AKUN ANDA TELAH DINONAKTIFKAN!");
             doLogout();
             return;
         }
         
         const data = s.val();
-        session = data; // Update session data
+        session = data; 
         startPanel();
-        startCountdown(data.expiry);
+        
+        // Update Countdown & Info Statis
+        runCountdown(data.expiry);
+        const dateObj = new Date(data.expiry);
+        document.getElementById('disp-statis').innerText = "SAMPAI : " + dateObj.toLocaleString('id-ID');
     });
 }
 
-function startCountdown(expireTime) {
+function runCountdown(expiry) {
     if(countdownInterval) clearInterval(countdownInterval);
-    
     countdownInterval = setInterval(() => {
-        const now = new Date().getTime();
-        const dest = new Date(expireTime).getTime();
-        const diff = dest - now;
-
+        const diff = new Date(expiry).getTime() - new Date().getTime();
         if(diff <= 0) {
             clearInterval(countdownInterval);
-            document.getElementById('countdown-timer').innerText = "EXP: EXPIRED!";
-            alert("MASA BERLAKU AKUN HABIS!");
+            alert("MASA BERLAKU HABIS!");
             doLogout();
         } else {
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById('countdown-timer').innerText = `EXP: ${d}d ${h}h ${m}m ${s}s`;
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            document.getElementById('disp-countdown').innerText = `WAKTU : ${d}d ${h}h ${m}m ${s}s`;
         }
     }, 1000);
 }
 
-// --- LOGIN & AUTH ---
+// --- AUTHENTICATION ---
 async function authLogin() {
     const u = document.getElementById('u_log').value;
     const p = document.getElementById('p_log').value;
+
     if(u === "acumalaka" && p === "gblk8989") { 
-        session = {user:u, role:"OWNER", expiry:"PERMANENT"}; 
-        loginOk(); return; 
+        session = {user:u, role:"OWNER"}; 
+        loginSuccess(); 
+        return; 
     }
+
     db.ref('users/'+u).once('value', s => {
-        if(s.exists() && s.val().pass === p) { session = s.val(); loginOk(); } 
-        else alert("LOGIN GAGAL!");
+        if(s.exists() && s.val().pass === p) { 
+            session = s.val(); 
+            loginSuccess();
+        } else {
+            alert("USERNAME ATAU PASSWORD SALAH!");
+        }
     });
 }
 
-function loginOk() {
+function loginSuccess() {
     localStorage.setItem('zerx_session', JSON.stringify(session));
     monitorAccount();
 }
@@ -92,23 +101,66 @@ function doLogout() {
 function startPanel() {
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('home-screen').classList.remove('hidden');
-    document.getElementById('info-usn').innerText = `USN : ${session.user.toUpperCase()}`;
+    document.getElementById('disp-usn').innerText = `USN : ${session.user.toUpperCase()}`;
+    
     if(session.role === "OWNER" || session.role === "ADMIN") {
         document.getElementById('admin-tools').classList.remove('hidden');
     }
 }
 
-// --- MANAGE USERS ---
+// --- KEY MANAGEMENT (ISOLATED) ---
+function doGenerate() {
+    let k = (document.getElementById('key_type').value === 'random') ? 
+        "ZERX-" + Math.random().toString(36).substr(2,6).toUpperCase() : 
+        document.getElementById('custom_key_input').value.toUpperCase();
+    
+    let maxD = document.getElementById('max_dev_input').value;
+    if(!k || !maxD) return alert("ISI DATA DENGAN LENGKAP!");
+
+    db.ref('license/'+k).set({
+        game: document.getElementById('g_sel').value,
+        day: document.getElementById('d_sel').value,
+        max_device: parseInt(maxD),
+        used: 0,
+        status: "AKTIF",
+        owner: session.user // Menyimpan siapa pembuat kunci
+    }).then(() => alert("BERHASIL MEMBUAT KEY: " + k));
+}
+
+function loadKeys() {
+    db.ref('license').on('value', s => {
+        let h = "";
+        s.forEach(k => {
+            const v = k.val();
+            // FILTER: Owner/Admin lihat semua, Reseller lihat miliknya saja
+            if(session.role === "OWNER" || session.role === "ADMIN" || v.owner === session.user) {
+                h += `<div class="item-card">
+                    <b style="color:var(--cyan)">${k.key}</b> <small style="font-size:8px; color:#555;">[${v.owner || 'Sys'}]</small><br>
+                    <div class="btn-group">
+                        <button onclick="alert('GAME: ${v.game}\\nMAX: ${v.max_device}\\nUSED: ${v.used}')" class="btn-blue">DETAIL</button>
+                        <button onclick="db.ref('license/${k.key}').remove()" class="btn-red">DELETE</button>
+                    </div>
+                </div>`;
+            }
+        });
+        document.getElementById('key-list').innerHTML = h || "TIDAK ADA DATA";
+    });
+}
+
+// --- USER MANAGEMENT ---
 function saveNewUser() {
     const u = document.getElementById('new_u').value;
     const p = document.getElementById('new_p').value;
     const r = document.getElementById('new_r').value;
-    const e = document.getElementById('new_e_date').value; // Ambil dari DatePicker
+    const e = document.getElementById('new_e_date').value;
 
-    if(!u || !p || !e) return alert("LENGKAPI DATA!");
+    if(!u || !p || !e) return alert("LENGKAPI FORM!");
 
     db.ref('users/'+u).set({ user: u, pass: p, role: r, expiry: e })
-    .then(() => { alert("USER SAVED!"); show('home-screen'); });
+    .then(() => {
+        alert("AKUN RESELLER BERHASIL DIBUAT!");
+        show('home-screen');
+    });
 }
 
 function loadUsers() {
@@ -118,7 +170,7 @@ function loadUsers() {
             const v = u.val();
             h += `<div class="item-card">
                 <b>${v.user}</b> <small>(${v.role})</small>
-                <button onclick="db.ref('users/${v.user}').remove()" class="btn-red" style="float:right; width:60px;">DEL</button>
+                <button onclick="db.ref('users/${v.user}').remove()" class="btn-red" style="float:right; width:60px; padding:5px;">DEL</button>
                 <div style="clear:both"></div>
             </div>`;
         });
@@ -126,18 +178,7 @@ function loadUsers() {
     });
 }
 
-// --- MANAGE KEYS (Logic sama) ---
-function doGenerate() {
-    let k = (document.getElementById('key_type').value === 'random') ? 
-        "ZERX-" + Math.random().toString(36).substr(2,6).toUpperCase() : 
-        document.getElementById('custom_key_input').value.toUpperCase();
-    if(!k) return alert("ISI KEY!");
-    db.ref('license/'+k).set({
-        game: document.getElementById('g_sel').value, day: document.getElementById('d_sel').value,
-        max_device: parseInt(document.getElementById('max_dev_input').value), used: 0, status: "AKTIF"
-    }).then(() => alert("KEY CREATED!"));
-}
-
+// --- UI NAVIGATION ---
 function show(id) {
     document.querySelectorAll('.box').forEach(b => b.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
@@ -145,26 +186,12 @@ function show(id) {
     if(id === 'manage-user-scr') loadUsers();
 }
 
-function toggleKeyInput() { document.getElementById('custom_key_input').classList.toggle('hidden', document.getElementById('key_type').value === 'random'); }
-
-function loadKeys() {
-    db.ref('license').on('value', s => {
-        let h = "";
-        s.forEach(k => {
-            const v = k.val();
-            h += `<div class="item-card">
-                <b>${k.key}</b><br>
-                <div class="btn-group">
-                    <button onclick="alert('(${v.game})\\nDAY: ${v.day}\\nMAX: ${v.max_device}\\nUSED: ${v.used}')" class="btn-blue">DETAIL</button>
-                    <button onclick="db.ref('license/${k.key}').remove()" class="btn-red">DELETE</button>
-                </div>
-            </div>`;
-        });
-        document.getElementById('key-list').innerHTML = h || "KOSONG";
-    });
+function toggleKeyInput() {
+    const type = document.getElementById('key_type').value;
+    document.getElementById('custom_key_input').classList.toggle('hidden', type === 'random');
 }
 
-// BINTANG
+// --- BACKGROUND ANIMATION ---
 const cvs = document.getElementById('starCanvas'); const ctx = cvs.getContext('2d');
 cvs.width = window.innerWidth; cvs.height = window.innerHeight;
 let stars = []; for(let i=0; i<100; i++) stars.push({x:Math.random()*cvs.width, y:Math.random()*cvs.height, s:Math.random()*1.5});
@@ -172,4 +199,4 @@ function drawStars() {
     ctx.clearRect(0,0,cvs.width,cvs.height); ctx.fillStyle="#fff";
     stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, 7); ctx.fill(); s.y+=0.5; if(s.y>cvs.height) s.y=0; });
     requestAnimationFrame(drawStars);
-}
+                  }
