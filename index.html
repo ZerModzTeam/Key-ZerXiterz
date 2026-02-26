@@ -10,30 +10,18 @@
 <body>
     <canvas id="starCanvas"></canvas>
 
-    <div id="login-screen" class="box glow-cyan animate-in">
+    <div id="login-screen" class="box glow-purple animate-in">
         <div class="header-logo">
-            <i class="fas fa-user-shield neon-icon"></i>
+            <i class="fas fa-user-shield neon-icon-purple"></i>
             <h2>ZERX LOGIN</h2>
         </div>
-        <div class="input-group">
-            <i class="fas fa-user"></i>
-            <input type="text" id="u_log" placeholder="USERNAME">
-        </div>
-        <div class="input-group">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="p_log" placeholder="PASSWORD">
-        </div>
-        <button onclick="authLogin()" class="btn-main"><i class="fas fa-sign-in-alt"></i> LOGIN PANEL</button>
-        
+        <input type="text" id="u_log" placeholder="USERNAME">
+        <input type="password" id="p_log" placeholder="PASSWORD">
+        <button onclick="authLogin()" class="btn-main">LOGIN PANEL</button>
         <div class="dev-container">
-            <p class="promo-text">BELUM PUNYA AKUN? <br> 
-               <a href="https://t.me/ZERXITERZ" class="buy-link">BELI DI SINI!</a>
+            <p style="font-size: 11px;">BELUM PUNYA AKUN? <br> 
+               <a href="https://t.me/ZERXITERZ" style="color:cyan; font-size:16px;">BELI DI SINI!</a>
             </p>
-            <div class="social-icons">
-                <a href="https://t.me/ZERXITERZ"><i class="fab fa-telegram"></i></a>
-                <a href="https://tiktok.com/@zerxiterz"><i class="fab fa-tiktok"></i></a>
-                <a href="https://youtube.com/@zerxiterz"><i class="fab fa-youtube"></i></a>
-            </div>
         </div>
     </div>
 
@@ -49,7 +37,6 @@
         </div>
         <button onclick="show('gen-scr')" class="btn-opt"><i class="fas fa-key"></i> BUAT KUNCI</button>
         <button onclick="show('list-scr')" class="btn-opt"><i class="fas fa-list-ul"></i> KELOLA KUNCI</button>
-        
         <div id="admin-tools" class="hidden">
             <div class="separator"><span>ADMIN ONLY</span></div>
             <button onclick="show('add-user-scr')" class="btn-opt admin-btn"><i class="fas fa-user-plus"></i> BUAT AKUN</button>
@@ -58,25 +45,33 @@
         <button onclick="doLogout()" class="btn-logout"><i class="fas fa-power-off"></i> LOGOUT</button>
     </div>
 
-    <div id="gen-scr" class="box hidden glow-blue animate-in">
-        <h3><i class="fas fa-plus-circle"></i> BUAT KUNCI</h3>
+    <div id="gen-scr" class="box hidden glow-purple animate-in">
+        <h3><i class="fas fa-key"></i> BUAT KUNCI</h3>
+        <span class="label-text">KEY TYPE:</span>
         <select id="key_type" onchange="toggleKeyInput()">
             <option value="random">RANDOM KEY</option>
             <option value="custom">CUSTOM KEY</option>
         </select>
         <input type="text" id="custom_key_input" class="hidden" placeholder="KETIK KEY...">
+        <span class="label-text">SELECT GAME:</span>
         <select id="g_sel">
             <option>FAKE LAG X ZERXITERZ</option>
             <option>FF MAX X ZERXITERZ</option>
             <option>BLOODSTRIKE X ZERXITERZ</option>
         </select>
-        <input type="number" id="max_dev_input" placeholder="MAX DEVICE" value="1">
-        <select id="d_sel"><option value="1">1 DAY</option><option value="7">7 DAYS</option><option value="30">30 DAYS</option></select>
+        <span class="label-text">MAX DEVICE:</span>
+        <input type="number" id="max_dev_input" value="1">
+        <span class="label-text">DURATION:</span>
+        <select id="d_sel">
+            <option value="1">1 DAY</option>
+            <option value="7">7 DAYS</option>
+            <option value="30">30 DAYS</option>
+        </select>
         <button onclick="doGenerate()" class="btn-main">GENERATE</button>
         <button onclick="show('home-screen')" class="btn-back">BACK</button>
     </div>
 
-    <div id="list-scr" class="box hidden glow-cyan animate-in">
+    <div id="list-scr" class="box hidden glow-purple animate-in">
         <h3><i class="fas fa-list"></i> KELOLA KUNCI</h3>
         <div id="key-list" class="scroll-area"></div>
         <button onclick="show('home-screen')" class="btn-back">BACK</button>
@@ -86,10 +81,12 @@
         <h3><i class="fas fa-user-plus"></i> BUAT AKUN</h3>
         <input type="text" id="new_u" placeholder="USERNAME BARU">
         <input type="text" id="new_p" placeholder="PASSWORD BARU">
+        <span class="label-text">ROLE :</span>
         <select id="new_r">
             <option value="RESELLER">RESELLER</option>
             <option value="ADMIN">ADMIN</option>
         </select>
+        <span class="label-text">EXPIRED :</span>
         <input type="datetime-local" id="new_e_date">
         <button onclick="saveNewUser()" class="btn-main">SIMPAN AKUN</button>
         <button onclick="show('home-screen')" class="btn-back">BACK</button>
