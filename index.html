@@ -21,16 +21,20 @@
                <a href="https://t.me/ZERXITERZ" style="color: cyan; font-size: 18px; text-decoration: underline;">BELI DI SINI!</a>
             </p>
             <div class="social-icons">
-                <a href="https://t.me/ZERXITERZ"><i class="fab fa-telegram"></i></a>
-                <a href="https://tiktok.com/@zerxiterz"><i class="fab fa-tiktok"></i></a>
-                <a href="https://youtube.com/@zerxiterz"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
     </div>
 
     <div id="home-screen" class="box hidden">
         <h2 style="color: cyan">MAIN MENU</h2>
-        <p id="welcome-msg" style="font-size: 11px; color: lime;"></p>
+        <div id="info-akun" style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333;">
+            <p style="margin: 0; color: #aaa; font-size: 10px;">INFO LOGIN :</p>
+            <p id="info-usn" style="margin: 5px 0; font-weight: bold; color: white;"></p>
+            <p id="countdown-timer" style="margin: 0; color: yellow; font-family: monospace; font-size: 12px;"></p>
+        </div>
         <button onclick="show('gen-scr')">BUAT KUNCI</button>
         <button onclick="show('list-scr')">KELOLA KUNCI</button>
         <div id="admin-tools" class="hidden">
@@ -54,11 +58,7 @@
             <option>BLOODSTRIKE X ZERXITERZ</option>
         </select>
         <input type="number" id="max_dev_input" placeholder="MAX DEVICE" value="1">
-        <select id="d_sel">
-            <option value="1">1 DAY</option>
-            <option value="7">7 DAYS</option>
-            <option value="30">30 DAYS</option>
-        </select>
+        <select id="d_sel"><option value="1">1 DAY</option><option value="7">7 DAYS</option><option value="30">30 DAYS</option></select>
         <button onclick="doGenerate()">GENERATE</button>
         <button onclick="show('home-screen')" style="background:grey">BACK</button>
     </div>
@@ -71,13 +71,14 @@
 
     <div id="add-user-scr" class="box hidden">
         <h3>ADD NEW USER</h3>
-        <input type="text" id="new_u" placeholder="NEW USERNAME">
-        <input type="text" id="new_p" placeholder="NEW PASSWORD">
+        <input type="text" id="new_u" placeholder="USERNAME">
+        <input type="text" id="new_p" placeholder="PASSWORD">
         <select id="new_r">
             <option value="RESELLER">RESELLER</option>
             <option value="ADMIN">ADMIN</option>
         </select>
-        <input type="text" id="new_e" placeholder="EXP: PERMANENT / 2027">
+        <p style="font-size: 10px; color: #777; margin: 5px 0;">PILIH TANGGAL EXPIRED :</p>
+        <input type="datetime-local" id="new_e_date" style="color-scheme: dark;">
         <button onclick="saveNewUser()" style="background:lime; color:black;">SAVE AKUN</button>
         <button onclick="show('home-screen')" style="background:grey">BACK</button>
     </div>
