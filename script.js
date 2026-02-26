@@ -30,19 +30,18 @@ function toggleKeyInput() {
 async function authLogin() {
     const u = document.getElementById('u_log').value;
     const p = document.getElementById('p_log').value;
-    if(u === "acumalaka" && p === "gblk8989") { session = { user: u, role: "OWNER" }; start(); return; }
-    db.ref('users/' + u).once('value', s => {
-        if(s.exists() && s.val().pass === p) { session = s.val(); start(); } 
-        else { alert("LOGIN GAGAL!"); }
+    if(u === "acumalaka" && p === "gblk8989") { session = {user:u, role:"OWNER"}; start(); return; }
+    db.ref('users/'+u).once('value', s => {
+        if(s.exists() && s.val().pass === p) { session = s.val(); start(); }
+        else alert("LOGIN GAGAL!");
     });
 }
 
 function start() {
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('home-screen').classList.remove('hidden');
-    document.getElementById('welcome-msg').innerText = `Logged in as: ${session.user}`;
-    if(session.role === "OWNER" || session.role === "ADMIN") 
-        document.getElementById('admin-tools').classList.remove('hidden');
+    document.getElementById('welcome-msg').innerText = `User: ${session.user}`;
+    if(session.role === "OWNER") document.getElementById('admin-tools').classList.remove('hidden');
 }
 
 function show(id) {
@@ -52,6 +51,64 @@ function show(id) {
 }
 
 function doGenerate() {
-    let k;
-    const type = document.getElementById('key_type').value;
-    if(type === 'random') {
+    let k = (document.getElementById('key_type').value === 'random') ? 
+        "ZERX-" + Math.random().toString(36).substr(2,6).toUpperCase() : 
+        document.getElementById('custom_key_input').value.toUpperCase();
+    
+    let maxD = document.getElementById('max_dev_input').value;
+    if(!k) return alert("KEY KOSONG!");
+    if(!maxD) return alert("ISI MAX DEVICE!");
+
+    db.ref('license/'+k).set({
+        game: document.getElementById('g_sel').value,
+        day: document.getElementById('d_sel').value,
+        max_device: parseInt(maxD),
+        used: 0,
+        status: "AKTIF"
+    }).then(() => alert("BERHASIL! KEY: " + k));
+}
+
+function loadKeys() {
+    db.ref('license').on('value', s => {
+        let h = "";
+        s.forEach(k => {
+            const v = k.val();
+            h += `<div style="border:1px solid cyan; margin:10px 0; padding:10px; border-radius:10px; background:rgba(0,0,0,0.4);">
+                <b style="color:yellow">${k.key}</b><br>
+                <div style="margin-top:10px; display:flex; gap:5px; justify-content:center;">
+                    <button onclick="detailKey('${k.key}')" style="width:65px; background:blue; font-size:9px; color:white;">DETAIL</button>
+                    <button onclick="editKey('${k.key}')" style="width:65px; background:orange; font-size:9px; color:white;">EDIT</button>
+                    <button onclick="delKey('${k.key}')" style="width:65px; background:red; font-size:9px; color:white;">DELETE</button>
+                </div>
+            </div>`;
+        });
+        document.getElementById('key-list').innerHTML = h || "KOSONG";
+    });
+}
+
+function detailKey(k) {
+    db.ref('license/'+k).once('value', s => {
+        const v = s.val();
+        alert(`(${v.game})\nDAY : ${v.day}\nMAX DEVICE : ${v.max_device}\nTERPAKAI : ${v.used}\nSTATUS : ${v.status}`);
+    });
+}
+
+function editKey(k) {
+    const newK = prompt("EDIT KEY NAME:", k);
+    const newMax = prompt("EDIT MAX DEVICE (ANGKA):");
+    if(newMax) {
+        if(newK && newK !== k) {
+            db.ref('license/'+k).once('value', s => {
+                db.ref('license/'+newK.toUpperCase()).set(s.val());
+                db.ref('license/'+k).remove();
+                db.ref('license/'+newK.toUpperCase()).update({max_device: parseInt(newMax)});
+            });
+        } else {
+            db.ref('license/'+k).update({max_device: parseInt(newMax)});
+        }
+    }
+}
+
+function delKey(k) {
+    if(confirm("YAKIN HAPUS KEY: " + k + " ?")) db.ref('license/'+k).remove();
+}
