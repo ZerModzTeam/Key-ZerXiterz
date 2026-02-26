@@ -3,26 +3,26 @@
 
 body { background: #02050a; color: white; font-family: 'Orbitron', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
 
-/* ANIMASI MASUK MANTUL */
+/* ANIMASI BOUNCE */
 .animate-in { animation: zoomBounce 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 @keyframes zoomBounce {
     0% { opacity: 0; transform: scale(0.7); filter: blur(8px); }
     100% { opacity: 1; transform: scale(1); filter: blur(0); }
 }
 
-.box { background: rgba(10, 15, 25, 0.95); backdrop-filter: blur(10px); border: 2px solid var(--purple); padding: 25px; border-radius: 20px; width: 340px; text-align: center; z-index: 10; box-shadow: 0 0 20px rgba(188, 19, 254, 0.2); }
+.box { background: rgba(10, 15, 25, 0.95); backdrop-filter: blur(10px); border: 2px solid var(--purple); padding: 25px; border-radius: 20px; width: 340px; text-align: center; z-index: 10; box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); }
 .hidden { display: none !important; }
 
-/* STROKE ABU-ABU DI INPUT */
+/* STROKE ABU-ABU */
 input, select { 
     width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; 
     background: rgba(0,0,0,0.6); color: white; 
-    border: 1.5px solid var(--stroke); /* Stroke Abu-abu */
+    border: 1.5px solid var(--stroke); 
     box-sizing: border-box; font-family: 'Orbitron'; outline: none; transition: 0.3s;
 }
-input:focus, select:focus { border-color: var(--cyan); }
+input:focus { border-color: var(--cyan); }
+input[type="datetime-local"] { color-scheme: dark; }
 
-/* LABEL EXPIRED */
 .label-text { display: block; text-align: left; font-size: 10px; color: #888; margin: 5px 0 0 5px; }
 
 button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: none; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; transition: 0.2s; }
@@ -35,8 +35,8 @@ button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border
 .info-card { background: rgba(0,0,0,0.5); padding: 12px; border-radius: 12px; border-left: 4px solid var(--cyan); text-align: left; margin-bottom: 15px; border-top: 1px solid var(--stroke); border-right: 1px solid var(--stroke); border-bottom: 1px solid var(--stroke); }
 .info-row { font-size: 11px; margin: 5px 0; display: flex; align-items: center; gap: 8px; }
 .scroll-area { max-height: 250px; overflow-y: auto; padding-right: 5px; }
-.item-card { border: 1px solid var(--stroke); margin: 8px 0; padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.03); text-align: left; }
+.item-card { border: 1px solid var(--stroke); margin: 10px 0; padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.03); text-align: left; }
 .neon-icon-purple { color: var(--purple); font-size: 40px; filter: drop-shadow(0 0 5px var(--purple)); }
 .separator { margin: 15px 0; border-bottom: 1px solid #222; position: relative; }
-.separator span { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #0a0f19; padding: 0 10px; font-size: 9px; color: #555; }
+.separator span { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #02050a; padding: 0 10px; font-size: 9px; color: #555; }
 canvas { position: absolute; top: 0; left: 0; z-index: 1; }
