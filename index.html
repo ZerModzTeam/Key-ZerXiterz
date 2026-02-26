@@ -3,22 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZERXITERZ PANEL</title>
+    <title>ZERXITERZ PREMIUM</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <canvas id="starCanvas"></canvas>
 
-    <div id="login-screen" class="box">
-        <div class="logo-container"><i class="fas fa-shield-alt" style="font-size: 50px; color: cyan; text-shadow: 0 0 15px cyan;"></i></div>
-        <h2 style="color: cyan;">ZERX LOGIN</h2>
-        <input type="text" id="u_log" placeholder="USERNAME">
-        <input type="password" id="p_log" placeholder="PASSWORD">
-        <button onclick="authLogin()">LOGIN PANEL</button>
+    <div id="login-screen" class="box glow-cyan">
+        <div class="header-logo">
+            <i class="fas fa-user-shield neon-icon"></i>
+            <h2>ZERX LOGIN</h2>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="u_log" placeholder="USERNAME">
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="p_log" placeholder="PASSWORD">
+        </div>
+        <button onclick="authLogin()" class="btn-main"><i class="fas fa-sign-in-alt"></i> LOGIN PANEL</button>
+        
         <div class="dev-container">
-            <p style="font-weight: bold; font-size: 14px; color: #fff;">BELUM PUNYA AKUN? <br> 
-               <a href="https://t.me/ZERXITERZ" style="color: cyan; font-size: 18px; text-decoration: underline;">BELI DI SINI!</a>
+            <p class="promo-text">BELUM PUNYA AKUN? <br> 
+               <a href="https://t.me/ZERXITERZ" class="buy-link">BELI DI SINI!</a>
             </p>
             <div class="social-icons">
                 <a href="#"><i class="fab fa-telegram"></i></a>
@@ -28,25 +37,32 @@
         </div>
     </div>
 
-    <div id="home-screen" class="box hidden">
-        <h2 style="color: cyan">MAIN MENU</h2>
-        <div id="info-akun" style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333;">
-            <p style="margin: 0; color: #aaa; font-size: 10px;">INFO LOGIN :</p>
-            <p id="info-usn" style="margin: 5px 0; font-weight: bold; color: white;"></p>
-            <p id="countdown-timer" style="margin: 0; color: yellow; font-family: monospace; font-size: 12px;"></p>
+    <div id="home-screen" class="box hidden glow-purple">
+        <div class="header-logo">
+            <i class="fas fa-th-large neon-icon-purple"></i>
+            <h2>MAIN MENU</h2>
         </div>
-        <button onclick="show('gen-scr')">BUAT KUNCI</button>
-        <button onclick="show('list-scr')">KELOLA KUNCI</button>
+        <div class="info-card">
+            <div class="info-row"><i class="fas fa-id-badge"></i> <span id="disp-usn"></span></div>
+            <div class="info-row"><i class="fas fa-clock"></i> <span id="disp-countdown"></span></div>
+            <div class="info-row"><i class="fas fa-calendar-alt"></i> <span id="disp-statis"></span></div>
+        </div>
+        <button onclick="show('gen-scr')" class="btn-opt"><i class="fas fa-key"></i> BUAT KUNCI</button>
+        <button onclick="show('list-scr')" class="btn-opt"><i class="fas fa-list-ul"></i> KELOLA KUNCI</button>
+        
         <div id="admin-tools" class="hidden">
-            <hr style="border: 0.5px solid #333; margin: 10px 0;">
-            <button onclick="show('add-user-scr')">ADD RESELLER</button>
-            <button onclick="show('manage-user-scr')">KELOLA AKUN</button>
+            <div class="separator"><span>ADMIN ONLY</span></div>
+            <button onclick="show('add-user-scr')" class="btn-opt admin-btn"><i class="fas fa-user-plus"></i> ADD RESELLER</button>
+            <button onclick="show('manage-user-scr')" class="btn-opt admin-btn"><i class="fas fa-users-cog"></i> KELOLA AKUN</button>
         </div>
-        <button onclick="doLogout()" style="background:red; margin-top: 20px;">LOGOUT</button>
+        <button onclick="doLogout()" class="btn-logout"><i class="fas fa-power-off"></i> LOGOUT</button>
     </div>
 
-    <div id="gen-scr" class="box hidden">
-        <h3>CREATE KEY</h3>
+    <div id="gen-scr" class="box hidden glow-blue">
+        <div class="header-logo">
+            <i class="fas fa-plus-circle neon-icon-blue"></i>
+            <h3>BUAT KUNCI</h3>
+        </div>
         <select id="key_type" onchange="toggleKeyInput()">
             <option value="random">RANDOM KEY</option>
             <option value="custom">CUSTOM KEY</option>
@@ -57,36 +73,17 @@
             <option>FF MAX X ZERXITERZ</option>
             <option>BLOODSTRIKE X ZERXITERZ</option>
         </select>
-        <input type="number" id="max_dev_input" placeholder="MAX DEVICE" value="1">
-        <select id="d_sel"><option value="1">1 DAY</option><option value="7">7 DAYS</option><option value="30">30 DAYS</option></select>
-        <button onclick="doGenerate()">GENERATE</button>
-        <button onclick="show('home-screen')" style="background:grey">BACK</button>
-    </div>
-
-    <div id="list-scr" class="box hidden">
-        <h3>LICENSE LIST</h3>
-        <div id="key-list" class="scroll-area"></div>
-        <button onclick="show('home-screen')" style="margin-top:10px">BACK</button>
-    </div>
-
-    <div id="add-user-scr" class="box hidden">
-        <h3>ADD NEW USER</h3>
-        <input type="text" id="new_u" placeholder="USERNAME">
-        <input type="text" id="new_p" placeholder="PASSWORD">
-        <select id="new_r">
-            <option value="RESELLER">RESELLER</option>
-            <option value="ADMIN">ADMIN</option>
+        <div class="input-group">
+            <i class="fas fa-mobile-alt"></i>
+            <input type="number" id="max_dev_input" placeholder="MAX DEVICE" value="1">
+        </div>
+        <select id="d_sel">
+            <option value="1">1 DAY</option>
+            <option value="7">7 DAYS</option>
+            <option value="30">30 DAYS</option>
         </select>
-        <p style="font-size: 10px; color: #777; margin: 5px 0;">PILIH TANGGAL EXPIRED :</p>
-        <input type="datetime-local" id="new_e_date" style="color-scheme: dark;">
-        <button onclick="saveNewUser()" style="background:lime; color:black;">SAVE AKUN</button>
-        <button onclick="show('home-screen')" style="background:grey">BACK</button>
-    </div>
-
-    <div id="manage-user-scr" class="box hidden">
-        <h3>MANAGE USERS</h3>
-        <div id="user-list-area" class="scroll-area"></div>
-        <button onclick="show('home-screen')" style="margin-top:10px">BACK</button>
+        <button onclick="doGenerate()" class="btn-main"><i class="fas fa-magic"></i> GENERATE</button>
+        <button onclick="show('home-screen')" class="btn-back">BACK</button>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
