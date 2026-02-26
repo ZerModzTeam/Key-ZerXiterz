@@ -1,10 +1,10 @@
-:root { --cyan: #00ffff; }
-body { background: #050a14; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+:root { --cyan: #00ffff; --red: #ff4444; }
+body { background: #050a14; color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
 
 .box { 
     background: rgba(10, 19, 36, 0.95); 
     border: 3px solid var(--cyan); 
-    padding: 25px; border-radius: 20px; width: 320px; text-align: center; z-index: 10; 
+    padding: 25px; border-radius: 20px; width: 330px; text-align: center; z-index: 10; 
     animation: rgbGlow 3s infinite linear; 
 }
 
@@ -16,28 +16,51 @@ body { background: #050a14; color: white; font-family: sans-serif; display: flex
 }
 
 .hidden { display: none !important; }
+
+/* Styling Input & Select biar seragam */
 input, select, button { 
     width: 100%; 
     padding: 12px; 
     margin: 8px 0; 
-    border-radius: 8px; 
-    background: #000; 
+    border-radius: 10px; 
+    background: #111; 
     color: white; 
     border: 1px solid #333; 
-    box-sizing: border-box; /* BIAR GAK MELEBAR */
+    box-sizing: border-box; 
+    outline: none;
 }
 
-button { background: var(--cyan); color: #000; font-weight: bold; cursor: pointer; border: none; }
-canvas { position: absolute; top: 0; left: 0; z-index: 1; }
+/* Khusus Input Tanggal biar warnanya gelap & rapi */
+input[type="datetime-local"] {
+    color-scheme: dark;
+    font-family: sans-serif;
+}
 
-.dev-container { margin-top: 15px; border-top: 1px solid #333; padding-top: 10px; }
-.social-icons { display: flex; justify-content: center; gap: 20px; font-size: 25px; margin: 15px 0; }
-.social-icons a { color: var(--cyan); }
+button { background: var(--cyan); color: #000; font-weight: bold; cursor: pointer; border: none; transition: 0.2s; }
+button:active { transform: scale(0.95); }
 
-.item-card { border: 1px solid cyan; margin: 10px 0; padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.4); text-align: left; }
+/* Developer Menu */
+.dev-container { margin-top: 15px; border-top: 1px solid #222; padding-top: 15px; }
+.social-icons { display: flex; justify-content: center; gap: 20px; font-size: 24px; margin: 10px 0; }
+.social-icons a { color: var(--cyan); text-decoration: none; }
+
+/* Kartu List (Key & User) */
+.item-card { 
+    border: 1px solid #222; 
+    margin: 10px 0; 
+    padding: 12px; 
+    border-radius: 12px; 
+    background: rgba(255, 255, 255, 0.05); 
+    text-align: left; 
+}
+
 .btn-group { margin-top: 10px; display: flex; gap: 5px; }
-.btn-blue { background: blue; color: white; font-size: 9px; padding: 5px; }
-.btn-orange { background: orange; color: white; font-size: 9px; padding: 5px; }
-.btn-red { background: red; color: white; font-size: 9px; padding: 5px; }
+.btn-blue { background: #0055ff; color: white; font-size: 10px; }
+.btn-orange { background: #ff8800; color: white; font-size: 10px; }
+.btn-red { background: var(--red); color: white; font-size: 10px; }
 
-.scroll-area { max-height: 250px; overflow-y: auto; }
+.scroll-area { max-height: 260px; overflow-y: auto; padding-right: 5px; }
+.scroll-area::-webkit-scrollbar { width: 4px; }
+.scroll-area::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+
+canvas { position: absolute; top: 0; left: 0; z-index: 1; }
