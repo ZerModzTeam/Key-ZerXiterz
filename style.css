@@ -16,7 +16,17 @@ body { background: #050a14; color: white; font-family: sans-serif; display: flex
 }
 
 .hidden { display: none !important; }
-input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; background: #000; color: white; border: 1px solid #333; box-sizing: border-box; }
+input, select, button { 
+    width: 100%; 
+    padding: 12px; 
+    margin: 8px 0; 
+    border-radius: 8px; 
+    background: #000; 
+    color: white; 
+    border: 1px solid #333; 
+    box-sizing: border-box; /* BIAR GAK MELEBAR */
+}
+
 button { background: var(--cyan); color: #000; font-weight: bold; cursor: pointer; border: none; }
 canvas { position: absolute; top: 0; left: 0; z-index: 1; }
 
