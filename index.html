@@ -20,7 +20,7 @@
         <button onclick="authLogin()" class="btn-main">LOGIN PANEL</button>
         <div class="dev-container">
             <p style="font-size: 11px;">BELUM PUNYA AKUN? <br> 
-               <a href="https://t.me/ZERXITERZ" style="color:cyan; font-size:16px;">BELI DI SINI!</a>
+               <a href="https://t.me/ZERXITERZ" style="color:cyan; font-size:16px; text-decoration: underline;">BELI DI SINI!</a>
             </p>
         </div>
     </div>
@@ -31,9 +31,9 @@
             <h2>MAIN MENU</h2>
         </div>
         <div class="info-card">
-            <div class="info-row"><i class="fas fa-id-badge"></i> <span id="disp-usn"></span></div>
-            <div class="info-row"><i class="fas fa-clock"></i> <span id="disp-countdown"></span></div>
-            <div class="info-row"><i class="fas fa-calendar-alt"></i> <span id="disp-statis"></span></div>
+            <div class="info-row"><i class="fas fa-id-badge" style="color:var(--cyan)"></i> <span id="disp-usn"></span></div>
+            <div class="info-row"><i class="fas fa-clock" style="color:yellow"></i> <span id="disp-countdown"></span></div>
+            <div class="info-row"><i class="fas fa-calendar-alt" style="color:white"></i> <span id="disp-statis"></span></div>
         </div>
         <button onclick="show('gen-scr')" class="btn-opt"><i class="fas fa-key"></i> BUAT KUNCI</button>
         <button onclick="show('list-scr')" class="btn-opt"><i class="fas fa-list-ul"></i> KELOLA KUNCI</button>
@@ -46,28 +46,17 @@
     </div>
 
     <div id="gen-scr" class="box hidden glow-purple animate-in">
-        <h3><i class="fas fa-key"></i> BUAT KUNCI</h3>
+        <h3><i class="fas fa-plus-circle"></i> BUAT KUNCI</h3>
         <span class="label-text">KEY TYPE:</span>
-        <select id="key_type" onchange="toggleKeyInput()">
-            <option value="random">RANDOM KEY</option>
-            <option value="custom">CUSTOM KEY</option>
-        </select>
-        <input type="text" id="custom_key_input" class="hidden" placeholder="KETIK KEY...">
+        <select id="key_type" onchange="toggleKeyInput()"><option value="random">RANDOM</option><option value="custom">CUSTOM</option></select>
+        <input type="text" id="custom_key_input" class="hidden" placeholder="INPUT CUSTOM KEY...">
         <span class="label-text">SELECT GAME:</span>
-        <select id="g_sel">
-            <option>FAKE LAG X ZERXITERZ</option>
-            <option>FF MAX X ZERXITERZ</option>
-            <option>BLOODSTRIKE X ZERXITERZ</option>
-        </select>
+        <select id="g_sel"><option>FAKE LAG X ZERXITERZ</option><option>FF MAX X ZERXITERZ</option><option>BLOODSTRIKE X ZERXITERZ</option></select>
         <span class="label-text">MAX DEVICE:</span>
         <input type="number" id="max_dev_input" value="1">
-        <span class="label-text">DURATION:</span>
-        <select id="d_sel">
-            <option value="1">1 DAY</option>
-            <option value="7">7 DAYS</option>
-            <option value="30">30 DAYS</option>
-        </select>
-        <button onclick="doGenerate()" class="btn-main">GENERATE</button>
+        <span class="label-text">DURATION (DAYS):</span>
+        <select id="d_sel"><option value="1">1 DAY</option><option value="7">7 DAYS</option><option value="30">30 DAYS</option></select>
+        <button onclick="doGenerate()" class="btn-main">GENERATE KEY</button>
         <button onclick="show('home-screen')" class="btn-back">BACK</button>
     </div>
 
@@ -82,10 +71,7 @@
         <input type="text" id="new_u" placeholder="USERNAME BARU">
         <input type="text" id="new_p" placeholder="PASSWORD BARU">
         <span class="label-text">ROLE :</span>
-        <select id="new_r">
-            <option value="RESELLER">RESELLER</option>
-            <option value="ADMIN">ADMIN</option>
-        </select>
+        <select id="new_r"><option value="RESELLER">RESELLER</option><option value="ADMIN">ADMIN</option></select>
         <span class="label-text">EXPIRED :</span>
         <input type="datetime-local" id="new_e_date">
         <button onclick="saveNewUser()" class="btn-main">SIMPAN AKUN</button>
